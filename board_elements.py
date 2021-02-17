@@ -31,9 +31,11 @@ class board_elements(parent_board):
                     self.add_to_board(row,column," ","default")
             self.add_to_board(row,column,"|","wall")
     
-    def add_paddle(self):
+    def add_paddle(self,x,y):
         (r,c)=self.board_dimension()
-        for c in range (5,10):
+        for c in range (1,c):
+            self.add_to_board(r-1,c," ","default")
+        for c in range (x,y):
             self.add_to_board(r-1,c,"~","paddle")
 
     def print_board(self):
@@ -48,4 +50,4 @@ class board_elements(parent_board):
     def prepare_board(self):
         self.add_walls()
         self.add_bricks()
-        self.add_paddle()
+        self.add_paddle(5,10)

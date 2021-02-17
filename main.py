@@ -12,16 +12,38 @@ if __name__== '__main__':
     input_char=getInputs.NBInput()
     input_char.nbTerm()
     input_char.flush()
-    input_char.orTerm()
+    
     
 
 
     b=board_elements(global_vars.console_length,global_vars.console_breadth)
     b.prepare_board()
+    x=5
+    y=10
     while(1):
         
         sp.call('clear',shell=True)
         b.print_board()
+
+        if input_char.kbHit():
+
+            key_pressed=input_char.getCh()
+
+            if key_pressed=='d':
+                x+=1
+                y+=1
+                b.add_paddle(x,y)
+            
+            if key_pressed=='a':
+                x-=1
+                y-=1
+                b.add_paddle(x,y)
+                
+            
+            if key_pressed=='q':
+                print("quitters never win :(")
+                input_char.orTerm()
+                break
 
         time.sleep(0.1)
 
