@@ -30,14 +30,14 @@ if __name__== '__main__':
             key_pressed=input_char.getCh()
 
             if key_pressed=='d':
-                x+=1
-                y+=1
-                b.add_paddle(x,y)
+                if global_vars.paddle_pos+1+global_vars.paddle_length < global_vars.console_breadth:
+                    global_vars.paddle_pos+=1
+                    b.add_paddle(global_vars.paddle_pos)
             
             if key_pressed=='a':
-                x-=1
-                y-=1
-                b.add_paddle(x,y)
+                if global_vars.paddle_pos-1 > 0:
+                    global_vars.paddle_pos-=1
+                    b.add_paddle(global_vars.paddle_pos)
                 
             
             if key_pressed=='q':
