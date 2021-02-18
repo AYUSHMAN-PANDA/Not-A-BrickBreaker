@@ -1,4 +1,5 @@
 import numpy as np
+from colours import colour_this
 
 class parent_board():
 
@@ -6,7 +7,7 @@ class parent_board():
         #inits the board with length,width and board matrix
         self._rows= rows
         self._columns= columns
-        self._board= np.full((self._rows,self._columns,2),''*10)
+        self._board= np.full((self._rows,self._columns,2),' '*10)
 
     def board_dimension(self):
         return (self._rows,self._columns)
@@ -26,6 +27,6 @@ class parent_board():
             return self._board[x][y][1] #some or other kind of article
 
     def printxy(self,x,y):
-        return (self._board[x][y][0]) #add colours according to type: _board[x][y][1] later
+        return (colour_this(self._board[x][y][0],self._board[x][y][1])) #add colours according to type: _board[x][y][1] 
 
 

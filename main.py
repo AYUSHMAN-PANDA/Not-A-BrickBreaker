@@ -30,14 +30,22 @@ if __name__== '__main__':
             key_pressed=input_char.getCh()
 
             if key_pressed=='d':
-                if global_vars.paddle_pos+1+global_vars.paddle_length < global_vars.console_breadth:
-                    global_vars.paddle_pos+=1
-                    b.add_paddle(global_vars.paddle_pos)
+                if global_vars.paddle_pos+2+global_vars.paddle_length < global_vars.console_breadth:
+                    global_vars.paddle_pos+=2
+                else:
+                    global_vars.paddle_pos=global_vars.console_breadth-global_vars.paddle_length
+                b.add_paddle(global_vars.paddle_pos)
             
             if key_pressed=='a':
-                if global_vars.paddle_pos-1 > 0:
-                    global_vars.paddle_pos-=1
-                    b.add_paddle(global_vars.paddle_pos)
+                if global_vars.paddle_pos-2 > 0:
+                    global_vars.paddle_pos-=2
+                else:
+                    global_vars.paddle_pos=1
+                b.add_paddle(global_vars.paddle_pos)
+            
+            if key_pressed=='t':
+                global_vars.paddle_length+=1
+                b.add_paddle(global_vars.paddle_pos)
                 
             
             if key_pressed=='q':

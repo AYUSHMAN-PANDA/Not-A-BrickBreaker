@@ -1,6 +1,7 @@
 from parent_board import parent_board
 import global_vars
 import random
+from bricks import add_a_brick
 
 class board_elements(parent_board):
 
@@ -15,7 +16,7 @@ class board_elements(parent_board):
         for x in range (bricks_height):
             for y in range (bricks_width):
                 if y%7==0:
-                    self.add_to_board(xpos+x,ypos+y,"B","brick")
+                    self.add_to_board(xpos+x,ypos+y,"B",add_a_brick())
 
     def add_walls(self):
         (r,c)=self.board_dimension()
@@ -34,12 +35,10 @@ class board_elements(parent_board):
     def add_paddle(self,x):
         y=x+global_vars.paddle_length
         (r,c)=self.board_dimension()
-        if(x>c or y>c):
-            return
         for c in range (1,c):
             self.add_to_board(r-1,c," ","default")
         for c in range (x,y):
-            self.add_to_board(r-1,c,"~","paddle")
+            self.add_to_board(r-1,c,"=","paddle")
 
     def print_board(self):
         (r,c)=self.board_dimension()
