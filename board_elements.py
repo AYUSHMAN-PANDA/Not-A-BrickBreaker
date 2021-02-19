@@ -9,13 +9,13 @@ class board_elements(parent_board):
         super().__init__(rows,columns)
 
     def add_bricks(self):
-        bricks_height=random.randint(10,20)
+        bricks_height=random.randint(10,12)
         bricks_width=random.randint(global_vars.console_breadth-20,global_vars.console_breadth-10)
         xpos=5
-        ypos=10
+        ypos=5
         for x in range (bricks_height):
             for y in range (bricks_width):
-                if y%7==0:
+                if y%11==0:
                     self.add_to_board(xpos+x,ypos+y,"B",add_a_brick())
 
     def add_walls(self):
@@ -24,22 +24,58 @@ class board_elements(parent_board):
             print(r,c)
 
         for row in range (r):
-            self.add_to_board(row,0,"|","wall")
+            self.add_to_board(row,0,"]","wall")
             for column in range (c):
-                if row==0:
-                    self.add_to_board(row,column,"-","wall")
+                if row==0 or row==r-1:
+                    if column>0:
+                        self.add_to_board(row,column,"-","twall")
                 elif(column!=0 & column!=c-1):
                     self.add_to_board(row,column," ","default")
-            self.add_to_board(row,column,"|","wall")
+            self.add_to_board(row,column,"[","wall")
+        
     
     def add_paddle(self,x):
         y=x+global_vars.paddle_length
         (r,c)=self.board_dimension()
-        for c in range (1,c):
-            self.add_to_board(r-1,c," ","default")
+        for c in range (1,c-1):
+            self.add_to_board(r-2,c," ","default")
         for c in range (x,y):
-            self.add_to_board(r-1,c,"=","paddle")
+            self.add_to_board(r-2,c,"=","paddle")
 
+    def add_ball(self,x,y):
+            self.add_to_board(x,y,"*","ball")
+
+    def ball_movement(self):
+
+        if self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) not in ["twall","paddle"]:
+            self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos," ","default")
+        
+        global_vars.ball_xpos+=global_vars.ball_xdir
+        global_vars.ball_ypos+=global_vars.ball_ydir
+        
+
+        if "brick" in self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos):
+            global_vars.score+=5
+        elif "twall" in self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos):
+            global_vars.lives-=1
+
+        if self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos)=='twall':
+            global_vars.ball_xdir=1
+            if global_vars.ball_ypos>global_vars.ball_ypos-global_vars.ball_ydir:
+                global_vars.ball_ydir=1
+            else:
+                global_vars.ball_ydir=-1
+        elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos)=='paddle':
+            global_vars.ball_xdir=-1
+            global_vars.ball_ydir=-1
+        else:
+            if self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) not in ["twall","paddle"]:
+                self.add_ball(global_vars.ball_xpos,global_vars.ball_ypos)
+
+    # def add_game_stats(self,x,y):
+    #     # (r,c)=self.board_dimension()
+    #     self.add_to_board(2,3,str(global_vars.lives),"default")
+    
     def print_board(self):
         (r,c)=self.board_dimension()
         str=''
@@ -53,3 +89,5 @@ class board_elements(parent_board):
         self.add_walls()
         self.add_bricks()
         self.add_paddle(global_vars.paddle_pos)
+        self.add_ball(global_vars.ball_xpos,global_vars.ball_ypos)
+        # self.add_game_stats(global_vars.ball_xpos,global_vars.ball_ypos)

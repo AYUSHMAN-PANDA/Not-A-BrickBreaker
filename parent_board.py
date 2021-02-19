@@ -21,11 +21,10 @@ class parent_board():
         self._board[x][y][1]="default"
 
     def get_element_type(self,x,y):
-        if self._board[x][y][1] in ["default"]: #looped to add different element types which shouldnt be seen as obstacle 
-            return "default"
-        else:
-            return self._board[x][y][1] #some or other kind of article
-
+            if self._board[x][y][1] in ["default"]: #looped to add different element types which shouldnt be seen as obstacle 
+                return "default"
+            else:
+                return self._board[x][y][1] #some or other kind of element
     def printxy(self,x,y):
         return (colour_this(self._board[x][y][0],self._board[x][y][1])) #add colours according to type: _board[x][y][1] 
 

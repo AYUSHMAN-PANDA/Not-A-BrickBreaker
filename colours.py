@@ -4,10 +4,10 @@ COLORS = {
     'wall': '\x1b[33m',
     'paddle': '\x1b[31m',
     '--': '\x1b[40;47m',
-    'brick1': '\x1b[45m',
-    'brick2': '\x1b[1;97;44m',
-    'brick3': '\x1b[31;1;100m',
-    'brick4': '\x1b[32;1;100m',
+    'brick1': '\x1b[40m',
+    'brick2': '\x1b[1m',
+    'brick3': '\x1b[31m',
+    'brick4': '\x1b[32m',
     'Progress': '\x1b[1;100m',
 
     'Hero': '\x1b[1;36;47m',
@@ -42,3 +42,4 @@ def colour_this(element,element_type):
         return COLORS[element_type]+element+END_COLOR
     except:
         return element
+    #return element
