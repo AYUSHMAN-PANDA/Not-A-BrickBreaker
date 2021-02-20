@@ -21,13 +21,13 @@ if __name__== '__main__':
     x=5
     y=10
     flag=0
-    s=0.03
+    s=0.05
     t=0
     while(1):
         
         t+=0.1
         sp.call('clear',shell=True)
-        print("[Remaining Life:",global_vars.lives,"], [Score:",global_vars.score,"],[Player Name:",global_vars.player,"]","time spent=",int(t))
+        print("[Remaining Life:",global_vars.lives,"], \t[Score:",global_vars.score,"],\t[Player Name:",global_vars.player,"]",",\t[time spent=",int(t),"]")
         b.print_board()
 
         if input_char.kbHit():
@@ -50,8 +50,12 @@ if __name__== '__main__':
                 b.add_paddle(global_vars.paddle_pos)
                 global_vars.ball_flag=1
 
-            if key_pressed=='t':
+            if key_pressed=='e':
                 global_vars.paddle_length+=1
+                b.add_paddle(global_vars.paddle_pos)
+            
+            if key_pressed=='s':
+                global_vars.paddle_length-=1
                 b.add_paddle(global_vars.paddle_pos)
             
             if key_pressed=='q':
@@ -59,6 +63,11 @@ if __name__== '__main__':
                 input_char.orTerm()
                 break
         
+        
+        b.expand_paddle_powerup()
+        b.shrink_paddle_powerup()
+        b.grab_ball_powerup()
+
         if global_vars.ball_flag==1:
            b.ball_movement()
 
@@ -68,7 +77,9 @@ if __name__== '__main__':
             print("Game o'vr ,",global_vars.player,"!")
             print("Your Score:",global_vars.score,"\nTime played:",int(t),"seconds")
             break
-        
+
+        if global_vars.grabbed==1:
+            print("Active powerup: Grab Ball")
         time.sleep(s)
 
 
