@@ -21,10 +21,13 @@ if __name__== '__main__':
     x=5
     y=10
     flag=0
+    s=0.03
+    t=0
     while(1):
         
+        t+=0.1
         sp.call('clear',shell=True)
-        print("[Remaining Life:",global_vars.lives,"] \t\t\t [Score:",global_vars.score,"] \t\t\t [Player Name:",global_vars.player,"]")
+        print("[Remaining Life:",global_vars.lives,"], [Score:",global_vars.score,"],[Player Name:",global_vars.player,"]","time spent=",int(t))
         b.print_board()
 
         if input_char.kbHit():
@@ -37,7 +40,7 @@ if __name__== '__main__':
                 else:
                     global_vars.paddle_pos=global_vars.console_breadth-global_vars.paddle_length-1
                 b.add_paddle(global_vars.paddle_pos)
-                flag=1
+                global_vars.ball_flag=1
             
             if key_pressed=='a':
                 if global_vars.paddle_pos-2 > 0:
@@ -45,23 +48,28 @@ if __name__== '__main__':
                 else:
                     global_vars.paddle_pos=1
                 b.add_paddle(global_vars.paddle_pos)
-                flag=1
+                global_vars.ball_flag=1
 
             if key_pressed=='t':
                 global_vars.paddle_length+=1
                 b.add_paddle(global_vars.paddle_pos)
-            
-            if key_pressed=='b':
-                flag=1
             
             if key_pressed=='q':
                 print("quitters never win :(")
                 input_char.orTerm()
                 break
         
-        if flag==1:
+        if global_vars.ball_flag==1:
            b.ball_movement()
-        time.sleep(0.05)
+
+        if global_vars.game_over==1:
+            #sp.call('clear',shell=True)
+            input_char.orTerm()
+            print("Game o'vr ,",global_vars.player,"!")
+            print("Your Score:",global_vars.score,"\nTime played:",int(t),"seconds")
+            break
+        
+        time.sleep(s)
 
 
 

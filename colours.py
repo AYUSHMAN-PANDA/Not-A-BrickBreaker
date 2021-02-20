@@ -1,9 +1,12 @@
 
 COLORS = {
     'default': '\033[m',
-    'wall': '\x1b[33m',
+    'twall': '\x1b[33m',
+    'bwall': '\x1b[33m',
+    'lwall': '\x1b[33m',
+    'rwall': '\x1b[33m',
     'paddle': '\x1b[31m',
-    '--': '\x1b[40;47m',
+    'default': '\x1b[49m',
     'brick1': '\x1b[40m',
     'brick2': '\x1b[1m',
     'brick3': '\x1b[31m',
@@ -38,8 +41,8 @@ END_COLOR = '\033[m'
 
 
 def colour_this(element,element_type):
-    try:
-        return COLORS[element_type]+element+END_COLOR
-    except:
-        return element
-    #return element
+    # try:
+    #     return COLORS[element_type]+element+END_COLOR
+    # except:
+    #     return element
+    return element
