@@ -11,15 +11,26 @@ Classic brick breaker game playable in a terminal. The game is designed in basic
 * Powerups : GrabBall,ThroughBall,ExpandPaddle,ShrinkPaddle
   
 ## Game Play:
+
+### Running the game:
 ```
 python3 main.py
 ```
+
+### Playing the game:
 * move paddle left  : a
 * move paddle right : d
 * quit game         : q
 
+### Powerups Explained:
+* E : Expands the paddle by 1 unit
+* S : Shrinks the paddle by 1 unit
+* G : Grabs the ball ,every time the ball hits the paddle
+* T : Ball passes thorugh all the balls ,destroying them,irrespective of their strength
+
 ## Game design:
 The game is entirely modular for further updates .It follows a simplistic class-object-member approach for all the elements on screen. New features can be added by making a class for it and adding it to the game board ( ``` board_elements.py ``` )
+
 ### Following OOPs concepts are used:
 * Encapsulation
 * Abstraction
