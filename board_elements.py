@@ -113,7 +113,7 @@ class board_elements(parent_board):
             return  
         if global_vars.grab==1:
             global_vars.gt+=1
-            if global_vars.gt%2==0:
+            if global_vars.gt%7==0:
                 self.add_to_board(global_vars.gx,global_vars.gy," ","default")
                 global_vars.gx+=1
                 if self.get_element_type(global_vars.gx,global_vars.gy) == "bwall":
@@ -136,21 +136,58 @@ class board_elements(parent_board):
         if prob==7:
             global_vars.grab=1
             self.add_to_board(global_vars.gx,global_vars.gy,"G","grab ball")
-            
+    
+    def through_ball_powerup(self):
+        global_vars.t_duration+=1
+        if global_vars.t_duration == 500:
+            global_vars.t_duration=0
+            global_vars.t_active=0
+            return  
+        if global_vars.through==1:
+            global_vars.tt+=1
+            if global_vars.tt%7==0:
+                self.add_to_board(global_vars.tx,global_vars.ty," ","default")
+                global_vars.tx+=1
+                if self.get_element_type(global_vars.tx,global_vars.ty) == "bwall":
+                    global_vars.through=0
+                    global_vars.tx=2
+                    global_vars.ty=10
+                    global_vars.tt=0
+                    return
+                elif self.get_element_type(global_vars.tx,global_vars.ty) == "paddle":
+                    global_vars.through=0
+                    global_vars.tx=2
+                    global_vars.ty=10
+                    global_vars.tt=0
+                    global_vars.t_active=1
+                    return
+                else: 
+                    self.add_to_board(global_vars.tx,global_vars.ty,"T","through ball")
+                    return
+        prob=random.randint(1,100)
+        if prob==7:
+            global_vars.through=1
+            self.add_to_board(global_vars.tx,global_vars.ty,"T","through ball")
 
     def ball_movement(self):
 
         if self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) not in ["twall","lwall","rwall","paddle"]:
-            if self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) == "brick1":
-                self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos," ","default")
-            elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) == "brick2":
-                self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos,"B","brick1")
-            elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) == "brick3":
-                self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos,"B","brick2")
-            elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) == "brick4":
-                a="do nothing..lol"
+            if global_vars.t_active==1:
+                if "brick" in self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos):
+                    self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos," ","default")
+                elif "ball" in self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos):
+                    self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos," ","default")
             else:
-                self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos," ","default")
+                if self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) == "brick1":
+                    self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos," ","default")
+                elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) == "brick2":
+                    self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos,"B","brick1")
+                elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) == "brick3":
+                    self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos,"B","brick2")
+                elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) == "brick4":
+                    a="do nothing..lol"
+                else:
+                    self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos," ","default")
         
         global_vars.ball_xpos+=global_vars.ball_xdir
         global_vars.ball_ypos+=global_vars.ball_ydir
@@ -171,18 +208,22 @@ class board_elements(parent_board):
                 global_vars.ball_xdir=global_vars.ball_speed
             else:
                 global_vars.ball_xdir=-global_vars.ball_speed
-        elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) in ["brick1","brick2","brick3","brick4"]:
-            global_vars.ball_ydir=global_vars.ball_speed
-            if global_vars.ball_xpos>global_vars.ball_xpos-global_vars.ball_xdir:
-                global_vars.ball_xdir=global_vars.ball_speed
-            else:
-                global_vars.ball_xdir=-global_vars.ball_speed
         elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos)=='rwall':
             global_vars.ball_ydir=-global_vars.ball_speed
             if global_vars.ball_xpos>global_vars.ball_xpos-global_vars.ball_xdir:
                 global_vars.ball_xdir=global_vars.ball_speed
             else:
                 global_vars.ball_xdir=-global_vars.ball_speed
+        elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) in ["brick1","brick2","brick3","brick4"]:
+            if global_vars.t_active!=1:
+                if global_vars.ball_ypos>global_vars.ball_ypos-global_vars.ball_ydir:
+                    global_vars.ball_ydir=-global_vars.ball_speed
+                else:
+                    global_vars.ball_ydir=global_vars.ball_speed
+                if global_vars.ball_xpos>global_vars.ball_xpos-global_vars.ball_xdir:
+                    global_vars.ball_xdir=global_vars.ball_speed
+                else:
+                    global_vars.ball_xdir=-global_vars.ball_speed
         elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos)=='bwall':
             global_vars.lives-=1
             global_vars.paddle_pos=50
@@ -207,9 +248,12 @@ class board_elements(parent_board):
             else:
                 global_vars.ball_ydir=-global_vars.ball_speed
         #else:
-        if self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) not in ["twall","lwall","rwall","brick1","brick2","brick3","brick4"]:
-            self.add_ball(global_vars.ball_xpos,global_vars.ball_ypos)
-
+        if global_vars.grabbed==0:    
+            if self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) not in ["paddle","twall","lwall","rwall","brick1","brick2","brick3","brick4"]:
+                self.add_ball(global_vars.ball_xpos,global_vars.ball_ypos)
+        else:
+            if self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) not in ["twall","lwall","rwall","brick1","brick2","brick3","brick4"]:
+                self.add_ball(global_vars.ball_xpos,global_vars.ball_ypos)
     # def add_game_stats(self,x,y):
     #     # (r,c)=self.board_dimension()
     #     self.add_to_board(2,3,str(global_vars.lives),"default")

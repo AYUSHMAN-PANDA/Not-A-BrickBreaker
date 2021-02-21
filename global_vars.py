@@ -17,24 +17,32 @@ degub=1
 
 #powerup flags:
 
-#paddle expand
+#paddle expand - E
 p_exp=0
 px=2
 py=52
 pt=0
 
-#paddle shrirnk
+#paddle shrirnk - S
 p_sh=0
 sx=2
 sy=45
 st=0
 
-#grab ball
+#grab ball - G
 grab=0
 gx=2
-gy=52
+gy=18
 gt=0
 grabbed=0
 duration=0 #in terms of frames
+
+#through ball - T
+through=0
+tx=2
+ty=10
+tt=0
+t_active=0
+t_duration=0 #in terms of frames
 
 game_over=0

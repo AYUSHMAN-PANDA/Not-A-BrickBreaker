@@ -27,7 +27,7 @@ if __name__== '__main__':
         
         t+=0.1
         sp.call('clear',shell=True)
-        print("[Remaining Life:",global_vars.lives,"], \t[Score:",global_vars.score,"],\t[Player Name:",global_vars.player,"]",",\t[time spent=",int(t),"]")
+        print("[Remaining Life:",global_vars.lives,"], \t[Score:",global_vars.score,"],\t[Player Name:",global_vars.player,"],\t[time spent=",int(t),"]")
         b.print_board()
 
         if input_char.kbHit():
@@ -50,23 +50,25 @@ if __name__== '__main__':
                 b.add_paddle(global_vars.paddle_pos)
                 global_vars.ball_flag=1
 
-            if key_pressed=='e':
-                global_vars.paddle_length+=1
-                b.add_paddle(global_vars.paddle_pos)
+            # if key_pressed=='e':
+            #     global_vars.paddle_length+=1
+            #     b.add_paddle(global_vars.paddle_pos)
             
-            if key_pressed=='s':
-                global_vars.paddle_length-=1
-                b.add_paddle(global_vars.paddle_pos)
+            # if key_pressed=='s':
+            #     global_vars.paddle_length-=1
+            #     b.add_paddle(global_vars.paddle_pos)
             
             if key_pressed=='q':
-                print("quitters never win :(")
                 input_char.orTerm()
+                print("quitters never win,",global_vars.player,"!_!")
+                print("Your Score:",global_vars.score,"\nTime played:",int(t),"seconds")
                 break
         
-        
+        #randomly add powerups at random time
         b.expand_paddle_powerup()
         b.shrink_paddle_powerup()
         b.grab_ball_powerup()
+        b.through_ball_powerup()
 
         if global_vars.ball_flag==1:
            b.ball_movement()
@@ -80,51 +82,9 @@ if __name__== '__main__':
 
         if global_vars.grabbed==1:
             print("Active powerup: Grab Ball")
+        if global_vars.t_active==1:
+            print("Active powerup: Through Ball")
+
         time.sleep(s)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #     a=parent_board(global_vars.console_length,global_vars.console_breadth)
-    #     (r,c)=a.board_dimension()
-    #     print(r,c)
-    #     for row in range (0,r):
-    #         a.add_to_board(row,0,"|","wall")
-    #         for column in range (0,c):
-    #             if(row==0):
-    #                 a.add_to_board(row,column,"-","wall")
-    #             elif(column!=0 & column!=c-1):
-    #                 a.add_to_board(row,column," ","default")
-    #         a.add_to_board(row,column,"|","wall")
-        
-    #     str=''
-    #     for row in range (0,r):
-    #         for column in range (0,c):
-    #             str+=a.printxy(row,column)
-    #         str+="\n"
-    #     print(str)
-
-    #    
-    # #setting up the environment
-    
         
