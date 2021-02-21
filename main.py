@@ -7,8 +7,8 @@ from board_elements import board_elements
 if __name__== '__main__':
     
     sp.call('clear',shell=True)
-    print("Not A Brick-Breaker")
-
+    print("Not A Brick-Breaker\n")
+    global_vars.player=input("Player name: ")
     input_char=getInputs.NBInput()
     input_char.nbTerm()
     input_char.flush()
@@ -23,10 +23,19 @@ if __name__== '__main__':
     flag=0
     s=0.05
     t=0
+
+    fool_loop=1
+    while(fool_loop!=500):
+        sp.call('clear',shell=True)
+        print("Loading game ...")
+        fool_loop+=1
+    
     while(1):
         
         t+=0.1
         sp.call('clear',shell=True)
+        print("\t\t\t\t\tNot A Brick-Breaker\n")
+        print('\x1b[1;31;40m')
         print("[Remaining Life:",global_vars.lives,"], \t[Score:",global_vars.score,"],\t[Player Name:",global_vars.player,"],\t[time spent=",int(t),"]")
         b.print_board()
 
@@ -80,6 +89,9 @@ if __name__== '__main__':
             print("Your Score:",global_vars.score,"\nTime played:",int(t),"seconds")
             break
 
+        print('\x1b[1;31;40m')
+        print("Enter q to quit")
+        print('\x1b[1;36;40m')
         if global_vars.grabbed==1:
             print("Active powerup: Grab Ball")
         if global_vars.t_active==1:

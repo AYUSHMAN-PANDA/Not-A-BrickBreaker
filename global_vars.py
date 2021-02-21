@@ -1,6 +1,6 @@
 player="Lucifer"
 score= 0
-lives=100
+lives=3
 console_length=40
 console_breadth=100
 paddle_pos=50   
@@ -13,7 +13,7 @@ ball_ydir=-1
 ball_flag=0
 ball_speed=1
 
-degub=1
+degub=1 #not used so much so far
 
 #powerup flags:
 
