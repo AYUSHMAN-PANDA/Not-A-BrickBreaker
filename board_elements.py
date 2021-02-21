@@ -2,6 +2,7 @@ from parent_board import parent_board
 import global_vars
 import random
 from bricks import add_a_brick
+from ball import ball
 
 class board_elements(parent_board):
 
@@ -171,92 +172,27 @@ class board_elements(parent_board):
 
     def ball_movement(self):
 
-        if self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) not in ["twall","lwall","rwall","paddle"]:
-            if global_vars.t_active==1:
-                if "brick" in self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos):
-                    self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos," ","default")
-                elif "ball" in self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos):
-                    self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos," ","default")
-            else:
-                if self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) == "brick1":
-                    self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos," ","default")
-                elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) == "brick2":
-                    self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos,"B","brick1")
-                elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) == "brick3":
-                    self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos,"B","brick2")
-                elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) == "brick4":
-                    a="do nothing..lol"
-                else:
-                    self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos," ","default")
+        ball_class=ball(self)
         
-        global_vars.ball_xpos+=global_vars.ball_xdir
-        global_vars.ball_ypos+=global_vars.ball_ydir
-
-        if "brick" in self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos):
-            global_vars.score+=5
+        ball_class.ball_bricks()
+        ball_class.update_ball_pos()
+        ball_class.ball_score()
     
             
         if self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos)=='twall':
-            global_vars.ball_xdir=global_vars.ball_speed
-            if global_vars.ball_ypos>global_vars.ball_ypos-global_vars.ball_ydir:
-                global_vars.ball_ydir=global_vars.ball_speed
-            else:
-                global_vars.ball_ydir=-global_vars.ball_speed
+            ball_class.ball_collision("twall")
         elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos)=='lwall':
-            global_vars.ball_ydir=global_vars.ball_speed
-            if global_vars.ball_xpos>global_vars.ball_xpos-global_vars.ball_xdir:
-                global_vars.ball_xdir=global_vars.ball_speed
-            else:
-                global_vars.ball_xdir=-global_vars.ball_speed
+            ball_class.ball_collision("lwall")
         elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos)=='rwall':
-            global_vars.ball_ydir=-global_vars.ball_speed
-            if global_vars.ball_xpos>global_vars.ball_xpos-global_vars.ball_xdir:
-                global_vars.ball_xdir=global_vars.ball_speed
-            else:
-                global_vars.ball_xdir=-global_vars.ball_speed
+            ball_class.ball_collision("rwall")
         elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) in ["brick1","brick2","brick3","brick4"]:
-            if global_vars.t_active!=1:
-                if global_vars.ball_ypos>global_vars.ball_ypos-global_vars.ball_ydir:
-                    global_vars.ball_ydir=-global_vars.ball_speed
-                else:
-                    global_vars.ball_ydir=global_vars.ball_speed
-                if global_vars.ball_xpos>global_vars.ball_xpos-global_vars.ball_xdir:
-                    global_vars.ball_xdir=global_vars.ball_speed
-                else:
-                    global_vars.ball_xdir=-global_vars.ball_speed
+            ball_class.ball_collision("brick")
         elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos)=='bwall':
-            global_vars.lives-=1
-            global_vars.paddle_pos=50
-            global_vars.ball_xpos=global_vars.console_length-3
-            global_vars.ball_ypos=55
-            global_vars.ball_flag=0
-            global_vars.ball_xdir=-global_vars.ball_speed
-            global_vars.ball_ydir=global_vars.ball_speed
-            if(global_vars.lives==0):
-                global_vars.game_over=1
-                return
-            self.add_paddle(global_vars.paddle_pos)
-            self.add_ball(global_vars.ball_xpos,global_vars.ball_ypos)
+            ball_class.ball_collision("bwall")
         elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos)=='paddle':
-            if global_vars.grabbed==1:
-                global_vars.ball_flag=0
-                global_vars.ball_xpos
-            global_vars.ball_xdir+=10
-            global_vars.ball_xdir=-global_vars.ball_speed
-            if global_vars.ball_ypos>global_vars.ball_ypos-global_vars.ball_ydir:
-                global_vars.ball_ydir=global_vars.ball_speed
-            else:
-                global_vars.ball_ydir=-global_vars.ball_speed
-        #else:
-        if global_vars.grabbed==0:    
-            if self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) not in ["paddle","twall","lwall","rwall","brick1","brick2","brick3","brick4"]:
-                self.add_ball(global_vars.ball_xpos,global_vars.ball_ypos)
-        else:
-            if self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) not in ["twall","lwall","rwall","brick1","brick2","brick3","brick4"]:
-                self.add_ball(global_vars.ball_xpos,global_vars.ball_ypos)
-    # def add_game_stats(self,x,y):
-    #     # (r,c)=self.board_dimension()
-    #     self.add_to_board(2,3,str(global_vars.lives),"default")
+            ball_class.ball_collision("paddle")
+
+        ball_class.add_ball_updated_pos()
     
     def print_board(self):
         (r,c)=self.board_dimension()
