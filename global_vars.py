@@ -45,4 +45,12 @@ tt=0
 t_active=0
 t_duration=0 #in terms of frames
 
+#falling bricks
+fall_activate=1
+falling_bricks=0
+
+
+#game - level
+current_level=1 #can be 1, 2 or 3[boss_level]
+
 game_over=0

@@ -14,10 +14,41 @@ class board_elements(parent_board):
         bricks_width=random.randint(global_vars.console_breadth-20,global_vars.console_breadth-10)
         xpos=5
         ypos=5
-        for x in range (bricks_height):
-            for y in range (bricks_width):
-                if y%11==0:
-                    self.add_to_board(xpos+x,ypos+y,"B",add_a_brick())
+        if global_vars.current_level==1:
+            for x in range (bricks_height):
+                for y in range (bricks_width):
+                    if x%2==0 and y%11==0:
+                        self.add_to_board(xpos+x,ypos+y,"B",add_a_brick())
+        elif global_vars.current_level==2:
+            for x in range (bricks_height):
+                for y in range (bricks_width):
+                    if y%17==0:
+                        self.add_to_board(xpos+x,ypos+y,"B",add_a_brick())
+
+        elif global_vars.current_level==3:
+            for x in range (bricks_height):
+                for y in range (bricks_width):
+                    if y%23==0:
+                        self.add_to_board(xpos+x,ypos+y,"B",add_a_brick())
+
+    def fall_bricks(self):
+        (r,c)=self.board_dimension()
+        dumb=999
+        for row in range (r):
+            if row==dumb:
+                continue
+            for column in range (c):    
+                    typ=self.get_element_type(row,column)
+                    if "brick" in typ:
+                        dumb=row+1
+                        if dumb+2==global_vars.console_length:
+                            global_vars.game_over=1
+                            return
+                        self.delete_from_board(row,column)
+                        self.add_to_board(row+1,column,"B",typ)
+                        
+
+
 
     def add_walls(self):
         (r,c)=self.board_dimension()

@@ -82,6 +82,8 @@ class ball():
             self.b.add_paddle(global_vars.paddle_pos)
             self.b.add_ball(global_vars.ball_xpos,global_vars.ball_ypos)
         elif type=="paddle":
+            if global_vars.fall_activate==1:
+                global_vars.falling_bricks=1
             if global_vars.grabbed==1:
                 global_vars.ball_flag=0
                 global_vars.ball_xpos

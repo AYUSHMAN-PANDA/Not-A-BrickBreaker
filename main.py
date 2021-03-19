@@ -24,11 +24,11 @@ if __name__== '__main__':
     s=0.05
     t=0
 
-    fool_loop=1
-    while(fool_loop!=500):
-        sp.call('clear',shell=True)
-        print("Loading game ...")
-        fool_loop+=1
+    # fool_loop=1
+    # while(fool_loop!=500):
+    #     sp.call('clear',shell=True)
+    #     print("Loading game ...")
+    #     fool_loop+=1
     
     while(1):
         
@@ -36,7 +36,7 @@ if __name__== '__main__':
         sp.call('clear',shell=True)
         print("\t\t\t\t\tNot A Brick-Breaker\n")
         print('\x1b[1;31;40m')
-        print("[Remaining Life:",global_vars.lives,"], \t[Score:",global_vars.score,"],\t[Player Name:",global_vars.player,"],\t[time spent=",int(t),"]")
+        print("[Remaining Life:",global_vars.lives,"], \t[Score:",global_vars.score,"],\t[Player Name:",global_vars.player,"],\t[time spent=",int(t),"]Current Level:",global_vars.current_level)
         b.print_board()
 
         if input_char.kbHit():
@@ -72,7 +72,19 @@ if __name__== '__main__':
                 print("quitters never win,",global_vars.player,"!_!")
                 print("Your Score:",global_vars.score,"\nTime played:",int(t),"seconds")
                 break
-        
+                
+            if key_pressed=='s':#skip level
+                global_vars.current_level+=1
+                if global_vars.current_level==4:
+                    global_vars.game_over=1
+                sp.call('clear',shell=True)
+                b.prepare_board()
+               # b.print_board()
+            
+            if key_pressed=='f':#trigger falling bricks
+                global_vars.falling_bricks=1
+                
+            
         #randomly add powerups at random time
         b.expand_paddle_powerup()
         b.shrink_paddle_powerup()
@@ -96,6 +108,12 @@ if __name__== '__main__':
             print("Active powerup: Grab Ball")
         if global_vars.t_active==1:
             print("Active powerup: Through Ball")
+        if global_vars.fall_activate==1:
+             print("Active : Bricks Falling")
+        
+        if global_vars.falling_bricks==1:
+            b.fall_bricks()
+            global_vars.falling_bricks=0
 
         time.sleep(s)
 
