@@ -2,7 +2,9 @@ from parent_board import parent_board
 import global_vars
 import random
 from bricks import add_a_brick
+from bricks import dont_add_rainbow_brick
 from ball import ball
+import os
 
 class board_elements(parent_board):
 
@@ -75,7 +77,10 @@ class board_elements(parent_board):
         for c in range (1,c-1):
             self.add_to_board(r-2,c," ","default")
         for c in range (x,y):
-            self.add_to_board(r-2,c,"=","paddle")
+            if global_vars.shoot_active==1:
+               self.add_to_board(r-2,c,"^","paddle")
+            else: 
+                self.add_to_board(r-2,c,"=","paddle")
 
     def add_ball(self,x,y):
             self.add_to_board(x,y,"*","ball")
@@ -83,7 +88,7 @@ class board_elements(parent_board):
     def expand_paddle_powerup(self):
         if global_vars.p_exp==1:
             global_vars.pt+=1
-            if global_vars.pt%7==0:
+            if global_vars.pt%4==0:
                 self.add_to_board(global_vars.px,global_vars.py," ","default")
                 global_vars.px+=1
                 if self.get_element_type(global_vars.px,global_vars.py) == "bwall":
@@ -93,6 +98,7 @@ class board_elements(parent_board):
                     global_vars.pt=0
                     return
                 elif self.get_element_type(global_vars.px,global_vars.py) == "paddle":
+                    os.system('aplay -q ./powerup.wav&')
                     global_vars.p_exp=0
                     global_vars.px=2
                     global_vars.py=52
@@ -111,7 +117,7 @@ class board_elements(parent_board):
     def shrink_paddle_powerup(self):
         if global_vars.p_sh==1:
             global_vars.st+=1
-            if global_vars.st%7==0:
+            if global_vars.st%4==0:
                 self.add_to_board(global_vars.sx,global_vars.sy," ","default")
                 global_vars.sx+=1
                 if self.get_element_type(global_vars.sx,global_vars.sy) == "bwall":
@@ -121,6 +127,7 @@ class board_elements(parent_board):
                     global_vars.st=0
                     return
                 elif self.get_element_type(global_vars.sx,global_vars.sy) == "paddle":
+                    os.system('aplay -q ./powerup.wav&')
                     global_vars.p_sh=0
                     global_vars.sx=2
                     global_vars.sy=45
@@ -145,7 +152,7 @@ class board_elements(parent_board):
             return  
         if global_vars.grab==1:
             global_vars.gt+=1
-            if global_vars.gt%7==0:
+            if global_vars.gt%4==0:
                 self.add_to_board(global_vars.gx,global_vars.gy," ","default")
                 global_vars.gx+=1
                 if self.get_element_type(global_vars.gx,global_vars.gy) == "bwall":
@@ -155,6 +162,7 @@ class board_elements(parent_board):
                     global_vars.gt=0
                     return
                 elif self.get_element_type(global_vars.gx,global_vars.gy) == "paddle":
+                    os.system('aplay -q ./powerup.wav&')
                     global_vars.grab=0
                     global_vars.gx=2
                     global_vars.gy=17
@@ -177,7 +185,7 @@ class board_elements(parent_board):
             return  
         if global_vars.through==1:
             global_vars.tt+=1
-            if global_vars.tt%7==0:
+            if global_vars.tt%4==0:
                 self.add_to_board(global_vars.tx,global_vars.ty," ","default")
                 global_vars.tx+=1
                 if self.get_element_type(global_vars.tx,global_vars.ty) == "bwall":
@@ -187,6 +195,7 @@ class board_elements(parent_board):
                     global_vars.tt=0
                     return
                 elif self.get_element_type(global_vars.tx,global_vars.ty) == "paddle":
+                    os.system('aplay -q ./powerup.wav&')
                     global_vars.through=0
                     global_vars.tx=2
                     global_vars.ty=10
@@ -200,6 +209,62 @@ class board_elements(parent_board):
         if prob==7:
             global_vars.through=1
             self.add_to_board(global_vars.tx,global_vars.ty,"T","through ball")
+
+    def shoot_paddle_powerup(self):
+        global_vars.shoot_duration+=1
+        if global_vars.shoot_duration == 500:
+            global_vars.shoot_duration=0
+            global_vars.shoot_active=0
+            self.add_paddle(global_vars.paddle_pos)
+            return  
+        if global_vars.shoot==1:
+            global_vars.shoot_t+=1
+            if global_vars.shoot_t%4==0:
+                self.add_to_board(global_vars.shoot_x,global_vars.shoot_y," ","default")
+                global_vars.shoot_x+=1
+                if self.get_element_type(global_vars.shoot_x,global_vars.shoot_y) == "bwall":
+                    global_vars.shoot=0
+                    global_vars.shoot_x=2
+                    global_vars.shoot_y=63
+                    global_vars.shoot_t=0
+                    return
+                elif self.get_element_type(global_vars.shoot_x,global_vars.shoot_y) == "paddle":
+                    os.system('aplay -q ./powerup.wav&')
+                    global_vars.shoot=0
+                    global_vars.shoot_x=2
+                    global_vars.shoot_y=63
+                    global_vars.shoot_t=0
+                    global_vars.shoot_active=1
+                    self.add_paddle(global_vars.paddle_pos)
+                    return
+                else: 
+                    self.add_to_board(global_vars.shoot_x,global_vars.shoot_y,"!","Shoot paddle")
+                    return
+        prob=random.randint(1,100)
+        if prob==7:
+            global_vars.shoot=1
+            self.add_to_board(global_vars.shoot_x,global_vars.shoot_y,"!","Shoot Paddle")
+
+    def shoot(self):
+        if global_vars.set_shoot_pos==0:
+            global_vars.set_shoot_pos=1
+            global_vars.bullet_x=global_vars.console_length-3
+            global_vars.bullet_y1=global_vars.paddle_pos
+            global_vars.bullet_y2=global_vars.paddle_pos+global_vars.paddle_length-1
+        self.add_to_board(global_vars.bullet_x,global_vars.bullet_y1,"|","Bullet")
+        self.add_to_board(global_vars.bullet_x,global_vars.bullet_y2,"|","Bullet")
+        self.add_to_board(global_vars.bullet_x,global_vars.bullet_y1," ","default")
+        self.add_to_board(global_vars.bullet_x,global_vars.bullet_y2," ","default")
+        global_vars.bullet_x-=1
+        self.add_to_board(global_vars.bullet_x,global_vars.bullet_y1,"|","Bullet")
+        self.add_to_board(global_vars.bullet_x,global_vars.bullet_y2,"|","Bullet")
+        if global_vars.bullet_x==1:
+            self.add_to_board(global_vars.bullet_x,global_vars.bullet_y1," ","default")
+            self.add_to_board(global_vars.bullet_x,global_vars.bullet_y2," ","default")
+            global_vars.bullet_x=global_vars.console_length-3
+            global_vars.bullet_active=0
+            global_vars.set_shoot_pos=0
+
 
     def ball_movement(self):
 
@@ -218,6 +283,8 @@ class board_elements(parent_board):
             ball_class.ball_collision("rwall")
         elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos) in ["brick1","brick2","brick3","brick4"]:
             ball_class.ball_collision("brick")
+        elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos)=="brick5":
+            self.add_to_board(global_vars.ball_xpos,global_vars.ball_ypos,"B",dont_add_rainbow_brick())
         elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos)=='bwall':
             ball_class.ball_collision("bwall")
         elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos)=='paddle':

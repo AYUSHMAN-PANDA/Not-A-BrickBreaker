@@ -4,6 +4,7 @@ from parent_board import parent_board
 import global_vars
 import time
 from board_elements import board_elements
+import os
 if __name__== '__main__':
     
     sp.call('clear',shell=True)
@@ -29,7 +30,7 @@ if __name__== '__main__':
     #     sp.call('clear',shell=True)
     #     print("Loading game ...")
     #     fool_loop+=1
-    
+    os.system('aplay -q ./start.wav&')
     while(1):
         
         t+=0.1
@@ -69,6 +70,7 @@ if __name__== '__main__':
             
             if key_pressed=='q':
                 input_char.orTerm()
+                os.system('aplay -q ./gameover.wav&')
                 print("quitters never win,",global_vars.player,"!_!")
                 print("Your Score:",global_vars.score,"\nTime played:",int(t),"seconds")
                 break
@@ -83,6 +85,14 @@ if __name__== '__main__':
             
             if key_pressed=='f':#trigger falling bricks
                 global_vars.falling_bricks=1
+            
+            if key_pressed==' ':#space bar for shooting paddle
+                if global_vars.shoot_active==1:
+                    global_vars.bullet_active=1
+        
+        if(global_vars.bullet_active==1):
+            b.shoot()
+
                 
             
         #randomly add powerups at random time
@@ -90,30 +100,41 @@ if __name__== '__main__':
         b.shrink_paddle_powerup()
         b.grab_ball_powerup()
         b.through_ball_powerup()
+        b.shoot_paddle_powerup()
 
         if global_vars.ball_flag==1:
            b.ball_movement()
 
         if global_vars.game_over==1:
             #sp.call('clear',shell=True)
+            os.system('aplay -q ./gameover.wav&')
             input_char.orTerm()
             print("Game o'vr ,",global_vars.player,"!")
             print("Your Score:",global_vars.score,"\nTime played:",int(t),"seconds")
             break
 
+        if int(t) ==15:
+            global_vars.fall_activate=1
+
         print('\x1b[1;31;40m')
         print("Enter q to quit")
         print('\x1b[1;36;40m')
+
         if global_vars.grabbed==1:
             print("Active powerup: Grab Ball")
         if global_vars.t_active==1:
             print("Active powerup: Through Ball")
         if global_vars.fall_activate==1:
-             print("Active : Bricks Falling")
-        
+            print("Active : Bricks Falling")
+        if global_vars.shoot_active==1:
+            print("Active : Paddle Shooting, Time remaining:",100-int((global_vars.shoot_duration/500)*100),"%")
+            # print(global_vars.shoot_duration/500*100,"%")
+
         if global_vars.falling_bricks==1:
             b.fall_bricks()
             global_vars.falling_bricks=0
+        
+        # print(input_char.getCh())
 
         time.sleep(s)
 

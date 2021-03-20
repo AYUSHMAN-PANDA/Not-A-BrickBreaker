@@ -46,9 +46,23 @@ t_active=0
 t_duration=0 #in terms of frames
 
 #falling bricks
-fall_activate=1
+fall_activate=0
 falling_bricks=0
 
+#shoot paddle - !
+shoot=0
+shoot_active=0
+shoot_x=2
+shoot_y=63
+shoot_duration=0
+shoot_t=0
+
+# bullet_t=0
+bullet_x=console_length-3
+bullet_y1=paddle_pos
+bullet_y2=paddle_pos+paddle_length-1
+bullet_active=0
+set_shoot_pos=0
 
 #game - level
 current_level=1 #can be 1, 2 or 3[boss_level]

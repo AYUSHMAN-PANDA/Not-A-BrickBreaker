@@ -1,4 +1,5 @@
 import global_vars
+import os
 
 class ball():
     def __init__(self,board):
@@ -41,24 +42,28 @@ class ball():
 
     def ball_collision(self,type):
         if type=="twall":
+            # os.system('aplay -q ./boss.wav&')
             global_vars.ball_xdir=global_vars.ball_speed
             if global_vars.ball_ypos>global_vars.ball_ypos-global_vars.ball_ydir:
                 global_vars.ball_ydir=global_vars.ball_speed
             else:
                 global_vars.ball_ydir=-global_vars.ball_speed
         elif type=="lwall":
+            # os.system('aplay -q ./boss.wav&')
             global_vars.ball_ydir=global_vars.ball_speed
             if global_vars.ball_xpos>global_vars.ball_xpos-global_vars.ball_xdir:
                 global_vars.ball_xdir=global_vars.ball_speed
             else:
                 global_vars.ball_xdir=-global_vars.ball_speed
         elif type=="rwall":
+            # os.system('aplay -q ./boss.wav&')
             global_vars.ball_ydir=-global_vars.ball_speed
             if global_vars.ball_xpos>global_vars.ball_xpos-global_vars.ball_xdir:
                 global_vars.ball_xdir=global_vars.ball_speed
             else:
                 global_vars.ball_xdir=-global_vars.ball_speed
         elif type=="brick":
+            os.system('aplay -q ./brick.wav&')
             if global_vars.t_active!=1:
                 if global_vars.ball_ypos>global_vars.ball_ypos-global_vars.ball_ydir:
                     global_vars.ball_ydir=-global_vars.ball_speed
@@ -69,6 +74,7 @@ class ball():
                 else:
                     global_vars.ball_xdir=-global_vars.ball_speed
         elif type=="bwall":
+            # os.system('aplay -q ./boss.wav&')
             global_vars.lives-=1
             global_vars.paddle_pos=50
             global_vars.ball_xpos=global_vars.console_length-3
@@ -82,6 +88,7 @@ class ball():
             self.b.add_paddle(global_vars.paddle_pos)
             self.b.add_ball(global_vars.ball_xpos,global_vars.ball_ypos)
         elif type=="paddle":
+            os.system('aplay -q ./paddle.wav&')
             if global_vars.fall_activate==1:
                 global_vars.falling_bricks=1
             if global_vars.grabbed==1:
