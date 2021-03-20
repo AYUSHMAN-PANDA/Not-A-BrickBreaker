@@ -14,8 +14,8 @@ class board_elements(parent_board):
     def add_bricks(self):
         bricks_height=random.randint(10,12)
         bricks_width=random.randint(global_vars.console_breadth-20,global_vars.console_breadth-10)
-        xpos=5
-        ypos=5
+        xpos=7
+        ypos=7
         if global_vars.current_level==1:
             for x in range (bricks_height):
                 for y in range (bricks_width):
@@ -24,14 +24,43 @@ class board_elements(parent_board):
         elif global_vars.current_level==2:
             for x in range (bricks_height):
                 for y in range (bricks_width):
-                    if y%17==0:
+                    if x%2==0 and y%17==0:
                         self.add_to_board(xpos+x,ypos+y,"B",add_a_brick())
 
         elif global_vars.current_level==3:
             for x in range (bricks_height):
                 for y in range (bricks_width):
-                    if y%23==0:
+                    if x%2==0 and y%23==0:
                         self.add_to_board(xpos+x,ypos+y,"B",add_a_brick())
+    
+    def boss_render(self):
+        prev_y=global_vars.boss_y-global_vars.boss_move
+        for i in range (3,7):
+            for j in range (prev_y,prev_y+8):
+                self.add_to_board(i,j," ","default")
+        enemy=[
+                [" "," ","^","^","^","^"," "," "," "],
+                ["=","=","=","=","=","=","=","=","="],
+                ["=","=","B","O","S","S","=","=","="],
+                ["-","-","-","-","-","-","-","-","-"]
+            ]
+        e=0
+        n=0
+        y=global_vars.boss_y
+        for i in range (3,7):
+            n=0
+            for j in range (y,y+8):
+                self.add_to_board(i,j,enemy[e][n],"Boss")
+                n+=1
+            e+=1
+
+        global_vars.boss_y+=global_vars.boss_move
+        if global_vars.boss_y+10==global_vars.console_breadth:
+            global_vars.boss_move*=-1
+        if global_vars.boss_y-2==0:
+            global_vars.boss_move*=-1
+
+
 
     def fall_bricks(self):
         (r,c)=self.board_dimension()
@@ -289,6 +318,11 @@ class board_elements(parent_board):
             ball_class.ball_collision("bwall")
         elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos)=='paddle':
             ball_class.ball_collision("paddle")
+        elif self.get_element_type(global_vars.ball_xpos,global_vars.ball_ypos)=='Boss':
+            global_vars.boss_hit+=1
+            os.system('aplay -q ./brick.wav&')
+            global_vars.score+=20
+
 
         ball_class.add_ball_updated_pos()
     

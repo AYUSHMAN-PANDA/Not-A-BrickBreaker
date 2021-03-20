@@ -94,7 +94,9 @@ if __name__== '__main__':
             b.shoot()
 
                 
-            
+        
+        if global_vars.current_level==3:
+            b.boss_render() 
         #randomly add powerups at random time
         b.expand_paddle_powerup()
         b.shrink_paddle_powerup()
@@ -133,6 +135,12 @@ if __name__== '__main__':
         if global_vars.falling_bricks==1:
             b.fall_bricks()
             global_vars.falling_bricks=0
+        
+        if global_vars.current_level==3:
+            print("Boss Damage:",int((global_vars.boss_hit/3)*100),"%")
+            if global_vars.boss_hit==3:
+                print("Boss Enemy Killed,You win the game!")
+                break;
         
         # print(input_char.getCh())
 

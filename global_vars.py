@@ -64,6 +64,11 @@ bullet_y2=paddle_pos+paddle_length-1
 bullet_active=0
 set_shoot_pos=0
 
+
+#boss
+boss_y=30
+boss_move=1
+boss_hit=0
 #game - level
 current_level=1 #can be 1, 2 or 3[boss_level]
 
