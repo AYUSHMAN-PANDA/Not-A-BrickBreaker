@@ -140,7 +140,7 @@ if __name__== '__main__':
             print("Boss Damage:",int((global_vars.boss_hit/3)*100),"%")
             if global_vars.boss_hit==3:
                 print("Boss Enemy Killed,You win the game!")
-                break;
+                break
         
         # print(input_char.getCh())
 
