@@ -323,7 +323,7 @@ class board_elements(parent_board):
             os.system('aplay -q ./brick.wav&')
             global_vars.score+=20
 
-
+     
         ball_class.add_ball_updated_pos()
     
     def print_board(self):

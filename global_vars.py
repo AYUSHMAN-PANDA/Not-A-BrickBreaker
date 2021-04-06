@@ -20,7 +20,7 @@ degub=1 #not used so much so far
 #paddle expand - E
 p_exp=0
 px=2
-py=52
+py=54
 pt=0
 
 #paddle shrirnk - S
@@ -32,7 +32,7 @@ st=0
 #grab ball - G
 grab=0
 gx=2
-gy=18
+gy=21
 gt=0
 grabbed=0
 duration=0 #in terms of frames
@@ -53,7 +53,7 @@ falling_bricks=0
 shoot=0
 shoot_active=0
 shoot_x=2
-shoot_y=63
+shoot_y=65
 shoot_duration=0
 shoot_t=0
 
